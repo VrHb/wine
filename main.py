@@ -1,7 +1,9 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from datetime import datetime
 
+import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+
 
 env = Environment(
     loader=FileSystemLoader('.'),
@@ -25,8 +27,11 @@ def get_correct_ending(years: int) -> str:
 start_company_year = datetime(year=1920, month=1, day=1).year
 company_age = datetime.now().year - start_company_year       
 
+wines = pandas.read_excel('wine.xlsx').to_dict(orient='record')
+
 rendered_page = template.render(
-    correct_company_age = get_correct_ending(company_age)      
+    wines=wines,
+    correct_company_age=get_correct_ending(company_age)      
 )
 
 with open('index.html', 'w', encoding="utf8") as file:
