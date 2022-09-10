@@ -1,7 +1,7 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from datetime import datetime
 from pprint import pprint
-
+import collections
 
 import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -27,12 +27,9 @@ def get_correct_ending(years: int) -> str:
 
 
 def sort_drinks(drinks: dict) -> dict:
-    sorted_drinks = {}
+    sorted_drinks = collections.defaultdict(list)
     for drink in drinks:
-        if drink['Категория'] not in sorted_drinks:
-            sorted_drinks[drink['Категория']] = [drink]
-        else:
-            sorted_drinks[drink['Категория']].append(drink)
+        sorted_drinks[drink['Категория']].append(drink)
     return sorted_drinks
 
 start_company_year = datetime(year=1920, month=1, day=1).year
@@ -49,7 +46,6 @@ pprint(sorted_drinks)
 
 
 rendered_page = template.render(
-    wines=wines,
     correct_company_age=get_correct_ending(company_age)      
 )
 
