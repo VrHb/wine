@@ -1,5 +1,7 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from datetime import datetime
+from pprint import pprint
+
 
 import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -24,10 +26,27 @@ def get_correct_ending(years: int) -> str:
     return f"{years} лет"
 
 
+def sort_drinks(drinks: dict) -> dict:
+    sorted_drinks = {}
+    for drink in drinks:
+        if drink['Категория'] not in sorted_drinks:
+            sorted_drinks[drink['Категория']] = [drink]
+        else:
+            sorted_drinks[drink['Категория']].append(drink)
+    return sorted_drinks
+
 start_company_year = datetime(year=1920, month=1, day=1).year
 company_age = datetime.now().year - start_company_year       
 
-wines = pandas.read_excel('wine.xlsx').to_dict(orient='record')
+drinks = pandas.read_excel(
+    'wine2.xlsx', 
+    sheet_name='Лист1',
+    keep_default_na=False
+)
+
+sorted_drinks = sort_drinks(drinks.to_dict('record'))
+pprint(sorted_drinks)
+
 
 rendered_page = template.render(
     wines=wines,
