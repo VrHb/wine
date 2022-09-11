@@ -36,7 +36,7 @@ start_company_year = datetime(year=1920, month=1, day=1).year
 company_age = datetime.now().year - start_company_year       
 
 drinks = pandas.read_excel(
-    'wine2.xlsx', 
+    'wine3.xlsx', 
     sheet_name='Лист1',
     keep_default_na=False
 )
@@ -46,6 +46,7 @@ pprint(sorted_drinks)
 
 
 rendered_page = template.render(
+    sorted_drinks=sorted_drinks,
     correct_company_age=get_correct_ending(company_age)      
 )
 
