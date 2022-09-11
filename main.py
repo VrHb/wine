@@ -26,11 +26,11 @@ def get_correct_ending(years: int) -> str:
     return f"{years} лет"
 
 
-def sort_drinks(drinks: dict) -> dict:
-    sorted_drinks = collections.defaultdict(list)
+def group_drinks(drinks: dict) -> dict:
+    grouped_drinks = collections.defaultdict(list)
     for drink in drinks:
-        sorted_drinks[drink['Категория']].append(drink)
-    return sorted_drinks
+        grouped_drinks[drink['Категория']].append(drink)
+    return grouped_drinks
 
 start_company_year = datetime(year=1920, month=1, day=1).year
 company_age = datetime.now().year - start_company_year       
@@ -41,17 +41,16 @@ drinks = pandas.read_excel(
     keep_default_na=False
 )
 
-sorted_drinks = sort_drinks(drinks.to_dict('record'))
-pprint(sorted_drinks)
-
+grouped_drinks = group_drinks(drinks.to_dict('record'))
 
 rendered_page = template.render(
-    sorted_drinks=sorted_drinks,
+    grouped_drinks=grouped_drinks,
     correct_company_age=get_correct_ending(company_age)      
 )
 
-with open('index.html', 'w', encoding="utf8") as file:
-    file.write(rendered_page)
+if __name__ == "__main__":
+    with open('index.html', 'w', encoding="utf8") as file:
+        file.write(rendered_page)
 
-server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-server.serve_forever()
+    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+    server.serve_forever()
