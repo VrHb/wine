@@ -25,8 +25,7 @@ def group_drinks(drinks: dict) -> dict:
 
 
 def main() -> None:
-    start_company_year = datetime(year=1920, month=1, day=1).year
-    company_age = datetime.now().year - start_company_year       
+    company_age = datetime.now().year - 1920       
 
     drinks = pandas.read_excel(
         'wines.xlsx', 
