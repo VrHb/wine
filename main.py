@@ -36,7 +36,7 @@ start_company_year = datetime(year=1920, month=1, day=1).year
 company_age = datetime.now().year - start_company_year       
 
 drinks = pandas.read_excel(
-    'wine3.xlsx', 
+    'wines.xlsx', 
     sheet_name='Лист1',
     keep_default_na=False
 )
