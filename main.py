@@ -1,9 +1,13 @@
+import argparse
 import collections
 from datetime import datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+
+DEFAULT_FILENAME = 'wines.xlsx'
 
 
 def get_correct_ending(years: int) -> str:
@@ -25,13 +29,26 @@ def group_drinks(drinks: dict) -> dict:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Описание программы"
+    )
+    parser.add_argument('file', help="Имя файла или абсолютный путь к файлу")
+    args = parser.parse_args()
+
     company_age = datetime.now().year - 1920       
 
-    drinks = pandas.read_excel(
-        'wines.xlsx', 
-        sheet_name='Лист1',
-        keep_default_na=False
-    )
+    try:
+        drinks = pandas.read_excel(
+            args.file, 
+            sheet_name='Лист1',
+            keep_default_na=False
+        )
+    except FileNotFoundError:
+        drinks = pandas.read_excel(
+            DEFAULT_FILENAME, 
+            sheet_name='Лист1',
+            keep_default_na=False
+        )
     grouped_drinks = group_drinks(drinks.to_dict('record'))
     
     env = Environment(
