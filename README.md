@@ -23,7 +23,11 @@ pip install -r requirements.txt
 - Запустите сайт командой: 
 
 ```
-python main.py
+python main.py <имя или путь к файлу>
+```
+Например:
+```
+python main.py /home/user/data/wines.xlsx
 ```
 
 - Перейдите на сайт по адресу [http://127.0.0.1:8000](http://127.0.0.1:8000).
